@@ -148,7 +148,7 @@
       <h2>MPA overview</h2>
       <table>
         <tbody>
-          <tr><th>Name of MPA</th><td>Lahemaa national park (EE)</td></tr><tr><th>Size of MPA</th><td>3721 ha</td></tr><tr><th>Type of MPA</th><td>National park</td></tr><tr><th>Date of MPA establishment</th><td>19.09.2015</td></tr><tr><th>Evaluator</th><td>Evaluator name</td></tr><tr><th>Date of assessment (earlier assessments)</th><td>25 June, 2025 (May, 2020)</td></tr><tr><th>Conservation objective</th><td>All species and habitats in favourable status</td></tr>
+          <tr><th>Name of MPA</th><td>Lahemaa national park (EE)</td></tr><tr><th>Size of MPA</th><td>3721 ha</td></tr><tr><th>Type of MPA</th><td>National park</td></tr><tr><th>Date of MPA establishment</th><td>19.09.2015</td></tr><tr><th>Evaluator</th><td>Evaluator name</td></tr><tr><th>Date of assessment (earlier assessments)</th><td>25 June, 2025 (May, 2020)</td></tr><tr><th>Conservation objective</th><td style="background:#c7d64f; font-weight:700;">All species and habitats in favourable status</td></tr>
         </tbody>
       </table>
 
@@ -190,7 +190,7 @@
     </div>
   </div>
 
-  <div class="twoCols" style="grid-template-columns: 1fr;">
+  <div class="twoCols">
     <div class="card">
       <h2>Status and trend</h2>
       <table>
@@ -207,6 +207,169 @@
         </tbody>
       </table>
     </div>
+    <div class="card">
+      <h2>Score distribution</h2>
+      <div style="border:1px solid var(--line); border-radius:14px; padding:10px; background:#fff; position:relative;">
+        <svg id="boxplot" width="100%" viewBox="0 0 520 320" style="display:block;">
+          <!-- axes -->
+          <line x1="54" y1="20" x2="54" y2="272" stroke="rgba(15,23,42,.25)" stroke-width="1"/>
+          <line x1="54" y1="272" x2="500" y2="272" stroke="rgba(15,23,42,.25)" stroke-width="1"/>
+          <!-- y ticks (0.2 to 1.0) -->
+          <g id="yticks" font-size="11" fill="rgba(15,23,42,.7)" font-family="system-ui"></g>
+          <!-- plots -->
+          <g id="plots"></g>
+          <!-- title -->
+          <text x="277" y="16" text-anchor="middle" font-size="14" font-weight="800" fill="rgba(15,23,42,.9)" font-family="system-ui">
+            Score median for Lahemaa NP
+          </text>
+        </svg>
+        <div id="bpTip" style="
+          position:absolute; left:0; top:0; transform:translate(-9999px,-9999px);
+          background:#fff; border:1px solid rgba(15,23,42,.12); border-radius:12px;
+          box-shadow:0 14px 28px rgba(2,6,23,.18);
+          padding:10px 12px; width:260px; font-size:12px; line-height:1.35; color:var(--text);
+          pointer-events:none; z-index:5;">
+        </div>
+      </div>
+      <script>
+        (function() {
+          const data = [{"label": "MPA score", "min": 0.35, "q1": 0.49, "med": 0.63, "q3": 0.7, "max": 0.76}, {"label": "Status & Trend", "min": 0.25, "q1": 0.29, "med": 0.34, "q3": 0.58, "max": 0.63}, {"label": "Management", "min": 0.48, "q1": 0.58, "med": 0.62, "q3": 0.83, "max": 0.95}, {"label": "Confidence", "min": 0.62, "q1": 0.69, "med": 0.75, "q3": 0.83, "max": 0.86}];
+          const svg = document.getElementById('boxplot');
+          const plots = document.getElementById('plots');
+          const ytickG = document.getElementById('yticks');
+          const tip = document.getElementById('bpTip');
+
+          const x0 = 80, x1 = 485;
+          const yTop = 30, yBot = 272;
+          const yMin = 0.2, yMax = 1.0;
+
+          const scaleY = (v) => yBot - ( (v - yMin) / (yMax - yMin) ) * (yBot - yTop);
+
+          // Y ticks
+          for (let t=0.2; t<=1.0001; t+=0.1) {
+            const y = scaleY(t);
+            const tick = document.createElementNS('http://www.w3.org/2000/svg','line');
+            tick.setAttribute('x1','50'); tick.setAttribute('x2','54');
+            tick.setAttribute('y1',y); tick.setAttribute('y2',y);
+            tick.setAttribute('stroke','rgba(15,23,42,.25)'); tick.setAttribute('stroke-width','1');
+            svg.appendChild(tick);
+
+            const lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+            lab.setAttribute('x','40'); lab.setAttribute('y',y+4);
+            lab.setAttribute('text-anchor','end');
+            lab.textContent = t.toFixed(1);
+            ytickG.appendChild(lab);
+          }
+
+          const w = (x1 - x0);
+          const step = w / data.length;
+          const boxW = Math.min(46, step * 0.42);
+
+          function showTip(e, d) {
+            const rect = svg.getBoundingClientRect();
+            const x = e.clientX - rect.left + 12;
+            const y = e.clientY - rect.top + 12;
+            tip.style.transform = 'translate(0,0)';
+            tip.innerHTML = `
+              <div style="font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:900; margin-bottom:6px;">
+                ${d.label}
+              </div>
+              <div><b>Min:</b> ${d.min.toFixed(2)}</div>
+              <div><b>Q1:</b> ${d.q1.toFixed(2)}</div>
+              <div><b>Median:</b> ${d.med.toFixed(2)}</div>
+              <div><b>Q3:</b> ${d.q3.toFixed(2)}</div>
+              <div><b>Max:</b> ${d.max.toFixed(2)}</div>
+            `;
+            // clamp within container
+            const tRect = tip.getBoundingClientRect();
+            let left = x, top = y;
+            if (left + tRect.width > rect.width - 6) left = rect.width - tRect.width - 6;
+            if (top + tRect.height > rect.height - 6) top = rect.height - tRect.height - 6;
+            tip.style.left = Math.max(6,left) + 'px';
+            tip.style.top = Math.max(6,top) + 'px';
+          }
+          function hideTip() {
+            tip.style.transform = 'translate(-9999px,-9999px)';
+          }
+
+          data.forEach((d, i) => {
+            const cx = x0 + step*(i + 0.5);
+            const yMinP = scaleY(d.min);
+            const yQ1 = scaleY(d.q1);
+            const yMed = scaleY(d.med);
+            const yQ3 = scaleY(d.q3);
+            const yMaxP = scaleY(d.max);
+
+            // whisker line
+            const wl = document.createElementNS('http://www.w3.org/2000/svg','line');
+            wl.setAttribute('x1',cx); wl.setAttribute('x2',cx);
+            wl.setAttribute('y1',yMaxP); wl.setAttribute('y2',yMinP);
+            wl.setAttribute('stroke','rgba(15,23,42,.45)'); wl.setAttribute('stroke-width','1.3');
+            plots.appendChild(wl);
+
+            // caps
+            const capTop = document.createElementNS('http://www.w3.org/2000/svg','line');
+            capTop.setAttribute('x1',cx-18); capTop.setAttribute('x2',cx+18);
+            capTop.setAttribute('y1',yMaxP); capTop.setAttribute('y2',yMaxP);
+            capTop.setAttribute('stroke','rgba(15,23,42,.45)'); capTop.setAttribute('stroke-width','1.3');
+            plots.appendChild(capTop);
+
+            const capBot = document.createElementNS('http://www.w3.org/2000/svg','line');
+            capBot.setAttribute('x1',cx-18); capBot.setAttribute('x2',cx+18);
+            capBot.setAttribute('y1',yMinP); capBot.setAttribute('y2',yMinP);
+            capBot.setAttribute('stroke','rgba(15,23,42,.45)'); capBot.setAttribute('stroke-width','1.3');
+            plots.appendChild(capBot);
+
+            // box
+            const box = document.createElementNS('http://www.w3.org/2000/svg','rect');
+            box.setAttribute('x',cx - boxW/2);
+            box.setAttribute('y',yQ3);
+            box.setAttribute('width',boxW);
+            box.setAttribute('height',Math.max(2, yQ1 - yQ3));
+            box.setAttribute('fill','#00ab9744');  // neutral green tint (not management colours)
+            box.setAttribute('stroke','#00ab97');
+            box.setAttribute('rx','6'); box.setAttribute('ry','6');
+            plots.appendChild(box);
+
+            // median line
+            const medL = document.createElementNS('http://www.w3.org/2000/svg','line');
+            medL.setAttribute('x1',cx - boxW/2);
+            medL.setAttribute('x2',cx + boxW/2);
+            medL.setAttribute('y1',yMed);
+            medL.setAttribute('y2',yMed);
+            medL.setAttribute('stroke','rgba(15,23,42,.55)'); medL.setAttribute('stroke-width','2');
+            plots.appendChild(medL);
+
+            // x label
+            const lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+            lab.setAttribute('x',cx);
+            lab.setAttribute('y',296);
+            lab.setAttribute('text-anchor','middle');
+            lab.setAttribute('font-size','12');
+            lab.setAttribute('font-weight','650');
+            lab.setAttribute('fill','rgba(15,23,42,.85)');
+            lab.setAttribute('font-family','system-ui');
+            lab.textContent = d.label;
+            plots.appendChild(lab);
+
+            // interactive overlay (transparent rect for easy hover)
+            const hit = document.createElementNS('http://www.w3.org/2000/svg','rect');
+            hit.setAttribute('x',cx - step/2 + 4);
+            hit.setAttribute('y',yTop);
+            hit.setAttribute('width',step - 8);
+            hit.setAttribute('height',yBot - yTop);
+            hit.setAttribute('fill','transparent');
+            hit.style.cursor = 'help';
+            hit.addEventListener('mousemove', (e) => showTip(e, d));
+            hit.addEventListener('mouseenter', (e) => showTip(e, d));
+            hit.addEventListener('mouseleave', hideTip);
+            plots.appendChild(hit);
+          });
+        })();
+      </script>
+
+    </div>
+
 
     
   </div>
