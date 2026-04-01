@@ -140,6 +140,10 @@
     /* ensure colors print */
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
+
+/* Ensure consistent SVG display */
+#svg, #svg_rank { display:block; }
+
 </style>
 </head>
 <body>
@@ -410,7 +414,7 @@ Figure 2: Score median for the 3 components providing the final MANEA score of t
   </div>
 
   <div style="margin-top:14px;">
-    <h2 style="margin:0 0 10px 0; font-size:13px; letter-spacing:.10em; text-transform:uppercase; color:#475569; font-weight:900;">Human activities, management measures and importance for each conservation feature</h2>
+    <h2>Human activities, management measures and importance for each conservation feature</h2>
 
     <div class="top" style="justify-content:flex-start; align-items:flex-start;">
       <div style="font-size:12px; font-weight:900; color:#475569; margin-bottom:4px;">Management level</div>
@@ -420,14 +424,7 @@ Figure 2: Score median for the 3 components providing the final MANEA score of t
         <span><span class="sw" style="background:rgba(56,142,60,0.5)"></span>High (67–100)</span>
         <span><span class="sw" style="background:var(--na)"></span>N/A</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:6px; position:relative; width:100%; max-width:260px;">
-  <label style="font-size:12px; font-weight:900;">Show ranking for:</label>
-
-  <div id="dropdownToggle" style="border:1px solid var(--line); padding:8px 10px; border-radius:10px; cursor:pointer; background:#fff;">
-    Select Conservation Feature
-  </div>
-
-  <div id="dropdownMenu" style="display:none; position:absolute; top:52px; left:0; right:0; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px; z-index:20; box-shadow:0 6px 16px rgba(0,0,0,0.08); max-height:220px; overflow-y:auto;">
+      <div id="dropdownMenu" style="display:none; position:absolute; top:52px; left:0; right:0; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px; z-index:20; box-shadow:0 6px 16px rgba(0,0,0,0.08); max-height:220px; overflow-y:auto;">
     
 <div style="display:flex; flex-direction:column; gap:10px;">
   <div>
@@ -449,12 +446,15 @@ Figure 2: Score median for the 3 components providing the final MANEA score of t
       </div>
     </div>
 
-    <div style="display:flex; gap:16px; align-items:flex-start;"><div style="display:flex; flex-direction:column;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3a</div><svg id="svg"></svg>
+    <div style="width:1000px; margin:0 auto; display:flex; gap:10px; align-items:flex-start;"><div style="width:500px; display:flex; flex-direction:column;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3a</div><svg id="svg"></svg>
     
-    <div style="font-size:12px; color:var(--muted); margin-top:10px;">
+    
+</div><div style="width:500px;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3b</div><svg id="svg_rank"></svg></div></div>
+
+<div style="width:1000px; margin:12px auto 0 auto; font-size:12px; color:var(--muted); line-height:1.4;">
 For the selected MPA all CFs (x-axis) and human activities (y-axis) are shown. Numbers inside the boxes represent either the number of MM for that particular CF and the HA affecting it (figure 3a) or the rank chosen for that HA affecting that particular CF (figure 3b). Colours represent management level from low to high, depending on the calculated score for implementation of MM, affect on the HA and rank given to a HA.
 </div>
-</div><div style="min-width:260px;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3b</div><div id="rankingContainer" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
+
   
     
 </div>
@@ -488,9 +488,9 @@ const cols = payload.cf.length;
 const width = margin.left + cols*cell + margin.right;
 const height = margin.top + rows*cell + margin.bottom;
 
-svg.setAttribute('width', width);
-svg.setAttribute('height', height);
 svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+          svg.style.width = '500px';
+          svg.style.height = 'auto';
 
 function el(name, attrs={}) {
   const n = document.createElementNS('http://www.w3.org/2000/svg', name);
@@ -1086,6 +1086,84 @@ function update(){
         wrap.appendChild(svg);
         container.appendChild(wrap);
       });
+    });
+  });
+})();
+
+
+// ===== STATIC FIGURE 3B (clean) =====
+(function(){
+  const svg2 = document.getElementById('svg_rank');
+  if(!svg2) return;
+
+  const margin = {top: 20, right: 120, bottom: 220, left: 260};
+  const cell = 58;
+  const rows = payload.ha.length;
+  const cols = payload.cf.length;
+
+  const width = margin.left + cols*cell + margin.right;
+  const height = margin.top + rows*cell + margin.bottom;
+
+  svg2.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg2.style.width = '500px';
+  svg2.style.height = 'auto';
+
+  function el(n,a={}){const e=document.createElementNS('http://www.w3.org/2000/svg',n);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e;}
+  function rank(v){return v==='high'?1:v==='moderate'?2:v==='low'?3:'';}
+
+  const grid = el('g', {transform:`translate(${margin.left},${margin.top})`});
+  svg2.appendChild(grid);
+
+  // Axis labels (match Figure 3a)
+  const yLabel = el('text', {
+    x: 40,
+    y: margin.top + (rows * cell) / 2,
+    class: 'axislabel',
+    transform: `rotate(-90 40 ${margin.top + (rows * cell) / 2})`,
+    'text-anchor': 'middle'
+  });
+  yLabel.textContent = 'Human Activities';
+  svg2.appendChild(yLabel);
+
+  const xLabel = el('text', {
+    x: margin.left + (cols * cell) / 2,
+    y: height - 18,
+    class: 'axislabel',
+    'text-anchor': 'middle'
+  });
+  xLabel.textContent = 'Conservation Features (aggregated score in parentheses)';
+  svg2.appendChild(xLabel);
+
+
+  // X labels
+  payload.cf.forEach((c,j)=>{
+    const x = margin.left + j*cell + cell/2;
+    const y = margin.top + rows*cell + 32;
+    const t = el('text', {x, y, class:'ticklabel', 'text-anchor':'end', transform:`rotate(-35 ${x} ${y})`});
+    t.textContent = c;
+    svg2.appendChild(t);
+  });
+
+  // Y labels
+  payload.ha.forEach((h,i)=>{
+    const t = el('text', {x: margin.left - 12, y: margin.top + i*cell + cell/2 + 4, class:'ticklabel', 'text-anchor':'end'});
+    t.textContent = h;
+    svg2.appendChild(t);
+  });
+
+  // Cells
+  payload.ha.forEach((_,i)=>{
+    payload.cf.forEach((_,j)=>{
+      const x = j*cell, y = i*cell;
+      const r = el('rect', {x, y, width:cell, height:cell, rx:10, class:'cellborder',
+        fill: payload.levels[i][j] ? payload.colors[payload.levels[i][j]] : '#f1f5f9'});
+      grid.appendChild(r);
+      const v = rank(payload.importance[i][j]);
+      if(v!==''){
+        const t = el('text', {x: x + cell/2, y: y + cell/2, class:'cellnum'});
+        t.textContent = v;
+        grid.appendChild(t);
+      }
     });
   });
 })();
