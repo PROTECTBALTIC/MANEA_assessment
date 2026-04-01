@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,9 +12,9 @@
     --muted:#64748b;
     --line:rgba(15,23,42,.12);
     --card:rgba(15,23,42,.03);
-    --low:#008e5c;
-    --mod:#c7d64f;
-    --high:#0075bf;
+    --low:rgba(211,47,47,0.5);
+    --mod:rgba(251,192,45,0.5);
+    --high:rgba(56,142,60,0.5);
     --na:#f1f5f9;
   }
   *{box-sizing:border-box}
@@ -55,6 +56,7 @@
     padding: 12px 12px 10px 12px;
     background:#fff;
   }
+  .card{display:flex;flex-direction:column;}
   .card h2{
     margin:0 0 10px 0;
     font-size:13px; letter-spacing:.10em;
@@ -79,6 +81,11 @@
   .scoreBox{
     display:flex; flex-direction:column; gap:10px;
   }
+  .scoreBox{flex:1;}
+  
+  .scoreRow.median{margin-top:auto;background:rgba(15,23,42,.06);border:1.5px solid rgba(15,23,42,.25);}
+  .scoreRow.median .v{font-size:26px;font-weight:1000;}
+  .scoreRow.median .k{font-size:13.5px;font-weight:900;}
   .scoreRow{
     display:flex; justify-content:space-between; align-items:baseline;
     padding:10px 12px; border:1px solid var(--line); border-radius:14px;
@@ -95,10 +102,14 @@
 
   /* Heatmap styles (aligned with your interactive visual) */
   .top{
+    margin-top:0px;
     display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap;
     justify-content:space-between; margin-bottom:12px;
   }
-  .legend{font-size:12px;color:#475569;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+  .legend{
+    margin-top:0 !important;
+    padding-top:0;
+    margin-top:0px;font-size:12px;color:#475569;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
   .sw{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid rgba(15,23,42,.10);margin-right:6px;}
   label{font-size:12px;color:#475569;font-weight:750;}
   select{font-size:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,.12);background:#fff;color:var(--text);}
@@ -148,7 +159,8 @@
       <h2>MPA overview</h2>
       <table>
         <tbody>
-          <tr><th>Name of MPA</th><td>Lahemaa national park (EE)</td></tr><tr><th>Size of MPA</th><td>3721 ha</td></tr><tr><th>Type of MPA</th><td>National park</td></tr><tr><th>Date of MPA establishment</th><td>19.09.2015</td></tr><tr><th>Evaluator</th><td>Evaluator name</td></tr><tr><th>Date of assessment (earlier assessments)</th><td>25 June, 2025 (May, 2020)</td></tr><tr><th>Conservation objective</th><td style="background:#c7d64f; font-weight:700;">All species and habitats in favourable status</td></tr>
+          <tr><th>Name of MPA</th><td>Lahemaa national park (EE)</td></tr><tr><th>Size of MPA</th><td>3721 ha</td></tr><tr><th>Type of MPA</th><td>National park</td></tr><tr><th>Date of MPA establishment</th><td>19.09.2015</td></tr><tr><th>Evaluator</th><td>Evaluator name</td></tr><tr><th>Date of assessment (earlier assessments)</th><td>25 June, 2025 (May, 2020)</td></tr><tr><th>Conservation objective</th><td style="background:rgba(251,192,45,0.5); font-weight:700;">All species and habitats in favourable status</td></tr>
+        
         </tbody>
       </table>
 
@@ -159,13 +171,13 @@
   <span style="display:inline-block; padding:4px 8px; margin-right:6px; border-radius:6px; background:#f1f5f9; border:1px solid rgba(15,23,42,.12);">
     CO does not exist
   </span>
-  <span style="display:inline-block; padding:4px 8px; margin-right:6px; border-radius:6px; background:#008e5c; color:#fff;">
+  <span style="display:inline-block; padding:4px 8px; margin-right:6px; border-radius:6px; background:rgba(211,47,47,0.5); color:#fff;">
     CO exists, not site-specific
   </span>
-  <span style="display:inline-block; padding:4px 8px; margin-right:6px; border-radius:6px; background:#c7d64f;">
+  <span style="display:inline-block; padding:4px 8px; margin-right:6px; border-radius:6px; background:rgba(251,192,45,0.5);">
     Site-specific, CO not achieved
   </span>
-  <span style="display:inline-block; padding:4px 8px; border-radius:6px; background:#0075bf; color:#fff;">
+  <span style="display:inline-block; padding:4px 8px; border-radius:6px; background:rgba(56,142,60,0.5); color:#fff;">
     Site-specific, CO achieved
   </span>
 </div>
@@ -182,9 +194,9 @@
           <div class="k">Previous MANEA Score</div>
           <div class="v small">44</div>
         </div>
-        <div class="scoreRow">
-          <div class="k">MANEA median (all Baltic NP, n=137)</div>
-          <div class="v small">55</div>
+        <div class="scoreRow median">
+          <div class="k">MANEA median (all Baltic NP, n=X)</div>
+          <div class="v">55</div>
         </div>
       </div>
     </div>
@@ -203,7 +215,9 @@
         </thead>
         <tbody>
           <tr><td>Sandbanks</td><td>Good**</td><td>Improving*</td></tr><tr><td>Mudflats</td><td>Good*</td><td>Deteriorating**</td></tr><tr><td>Lagoons</td><td>Moderate**</td><td>Stable***</td></tr><tr><td>Eagle</td><td>Bad***</td><td>Unsure*</td></tr><tr><td>Lamprey</td><td>Bad***</td><td>Unknown</td></tr>
-          <tr><td colspan="3" style="color:var(--muted); font-size:12px;">Confidence: Low * &nbsp; Medium ** &nbsp; High ***</td></tr>
+          
+        
+          <tr><td colspan="3" style="color:var(--muted); font-size:12px; padding-top:12px;">Figure 1: Status and trend for all conservation features of the selected MPA. Confidence is marked via asterisks from low (mostly expert judgement) to high (data driven evaluation for status and trend).</td></tr>
         </tbody>
       </table>
     </div>
@@ -223,17 +237,27 @@
             Score median for Lahemaa NP
           </text>
         </svg>
+<div style="font-size:12px; color:var(--muted); margin-top:10px;">
+Figure 2: Score median for the 3 components providing the final MANEA score of the chosen MPA. This consists of the score for ”status and trend” for each conservation feature, the score for ”management” (MM implementation and impact on HA for each CF, as well ranking of HA and if applicable also existing restoration measures), as well as the ”confidence” component (representing how well data are monitored for the CFs and monitoring of impact for the MM).
+</div>
         <div id="bpTip" style="
           position:absolute; left:0; top:0; transform:translate(-9999px,-9999px);
           background:#fff; border:1px solid rgba(15,23,42,.12); border-radius:12px;
           box-shadow:0 14px 28px rgba(2,6,23,.18);
           padding:10px 12px; width:260px; font-size:12px; line-height:1.35; color:var(--text);
           pointer-events:none; z-index:5;">
-        </div>
+        
+      <div style="font-size:12px; color:var(--muted); margin-top:8px;">
+Figure 2: Score median for the 3 components providing the final MANEA score of the chosen MPA. This consists of the score for ”status and trend” for each conservation feature, the score for ”management” (MM implementation and impact on HA for each CF, as well ranking of HA and if applicable also existing restoration measures), as well as the ”confidence” component (representing how well data are monitored for the CFs and monitoring of impact for the MM).
+</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:10px;">
+Figure 2: Score median for the 3 components providing the final MANEA score of the chosen MPA. This consists of the score for ”status and trend” for each conservation feature, the score for ”management” (MM implementation and impact on HA for each CF, as well ranking of HA and if applicable also existing restoration measures), as well as the ”confidence” component (representing how well data are monitored for the CFs and monitoring of impact for the MM).
+</div>
+    </div>
       </div>
       <script>
         (function() {
-          const data = [{"label": "MPA score", "min": 0.35, "q1": 0.49, "med": 0.63, "q3": 0.7, "max": 0.76}, {"label": "Status & Trend", "min": 0.25, "q1": 0.29, "med": 0.34, "q3": 0.58, "max": 0.63}, {"label": "Management", "min": 0.48, "q1": 0.58, "med": 0.62, "q3": 0.83, "max": 0.95}, {"label": "Confidence", "min": 0.62, "q1": 0.69, "med": 0.75, "q3": 0.83, "max": 0.86}];
+          const data = [{"label": "Status & Trend", "min": 0.25, "q1": 0.29, "med": 0.34, "q3": 0.58, "max": 0.63}, {"label": "Management", "min": 0.48, "q1": 0.58, "med": 0.62, "q3": 0.83, "max": 0.95}, {"label": "Confidence", "min": 0.62, "q1": 0.69, "med": 0.75, "q3": 0.83, "max": 0.86}];
           const svg = document.getElementById('boxplot');
           const plots = document.getElementById('plots');
           const ytickG = document.getElementById('yticks');
@@ -241,12 +265,12 @@
 
           const x0 = 80, x1 = 485;
           const yTop = 30, yBot = 272;
-          const yMin = 0.2, yMax = 1.0;
+          const yMin = 0, yMax = 100;
 
           const scaleY = (v) => yBot - ( (v - yMin) / (yMax - yMin) ) * (yBot - yTop);
 
           // Y ticks
-          for (let t=0.2; t<=1.0001; t+=0.1) {
+          for (let t=0; t<=100; t+=10) {
             const y = scaleY(t);
             const tick = document.createElementNS('http://www.w3.org/2000/svg','line');
             tick.setAttribute('x1','50'); tick.setAttribute('x2','54');
@@ -257,7 +281,7 @@
             const lab = document.createElementNS('http://www.w3.org/2000/svg','text');
             lab.setAttribute('x','40'); lab.setAttribute('y',y+4);
             lab.setAttribute('text-anchor','end');
-            lab.textContent = t.toFixed(1);
+            lab.textContent = t.toFixed(0);
             ytickG.appendChild(lab);
           }
 
@@ -294,11 +318,11 @@
 
           data.forEach((d, i) => {
             const cx = x0 + step*(i + 0.5);
-            const yMinP = scaleY(d.min);
-            const yQ1 = scaleY(d.q1);
-            const yMed = scaleY(d.med);
-            const yQ3 = scaleY(d.q3);
-            const yMaxP = scaleY(d.max);
+            const yMinP = scaleY(d.min*100);
+            const yQ1 = scaleY(d.q1*100);
+            const yMed = scaleY(d.med*100);
+            const yQ3 = scaleY(d.q3*100);
+            const yMaxP = scaleY(d.max*100);
 
             // whisker line
             const wl = document.createElementNS('http://www.w3.org/2000/svg','line');
@@ -341,6 +365,17 @@
             plots.appendChild(medL);
 
             // x label
+            // sample size label
+            const nlab = document.createElementNS('http://www.w3.org/2000/svg','text');
+            nlab.setAttribute('x',cx);
+            nlab.setAttribute('y',310);
+            nlab.setAttribute('text-anchor','middle');
+            nlab.setAttribute('font-size','11');
+            nlab.setAttribute('fill','rgba(15,23,42,.6)');
+            nlab.setAttribute('font-family','system-ui');
+            nlab.textContent = 'n=X';
+            plots.appendChild(nlab);
+
             const lab = document.createElementNS('http://www.w3.org/2000/svg','text');
             lab.setAttribute('x',cx);
             lab.setAttribute('y',296);
@@ -374,31 +409,59 @@
     
   </div>
 
-  <div class="card" style="margin-top:14px;">
-    <h2>Human activities, management measures and importance</h2>
-<div>Management level</div>
-    <div class="top">
-      <div class="legend" aria-label="Legend">
-        <span><span class="sw" style="background:#008e5c"></span>Low (0–33)</span>
-        <span><span class="sw" style="background:#c7d64f"></span>Moderate (34–66)</span>
-        <span><span class="sw" style="background:#0075bf"></span>High (67–100)</span>
+  <div style="margin-top:14px;">
+    <h2 style="margin:0 0 10px 0; font-size:13px; letter-spacing:.10em; text-transform:uppercase; color:#475569; font-weight:900;">Human activities, management measures and importance for each conservation feature</h2>
+
+    <div class="top" style="justify-content:flex-start; align-items:flex-start;">
+      <div style="font-size:12px; font-weight:900; color:#475569; margin-bottom:4px;">Management level</div>
+      <div class="legend" aria-label="Legend" style="justify-content:flex-start;">
+        <span><span class="sw" style="background:rgba(211,47,47,0.5)"></span>Low (0–33)</span>
+        <span><span class="sw" style="background:rgba(251,192,45,0.5)"></span>Moderate (34–66)</span>
+        <span><span class="sw" style="background:rgba(56,142,60,0.5)"></span>High (67–100)</span>
         <span><span class="sw" style="background:var(--na)"></span>N/A</span>
       </div>
-      <div>
-        <label for="cfSelect">Sort rows by importance within:</label>
-        <select id="cfSelect">
-          <option value="off">Off</option>
-        </select>
-        <div class="hint">Rows animate to show importance ranking for the selected Conservation Feature. Dashed lines mark the importance groups.</div>
-      </div>
-    </div>
+      <div style="display:flex; flex-direction:column; gap:6px; position:relative; width:100%; max-width:260px;">
+  <label style="font-size:12px; font-weight:900;">Show ranking for:</label>
 
-    <svg id="svg"></svg>
+  <div id="dropdownToggle" style="border:1px solid var(--line); padding:8px 10px; border-radius:10px; cursor:pointer; background:#fff;">
+    Select Conservation Feature
+  </div>
+
+  <div id="dropdownMenu" style="display:none; position:absolute; top:52px; left:0; right:0; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px; z-index:20; box-shadow:0 6px 16px rgba(0,0,0,0.08); max-height:220px; overflow-y:auto;">
+    
+<div style="display:flex; flex-direction:column; gap:10px;">
+  <div>
+    <div style="font-weight:800; font-size:11px; margin-bottom:4px;">Conservation Features</div>
+    <div id="cfCheckboxes" style="display:flex; flex-direction:column; gap:4px;"></div>
+  </div>
+      <div>
+        
+
   </div>
 </div>
 
+  </div>
+
+  <select id="cfSelect" style="display:none;"></select>
+</div>
+
+        <div class="hint"></div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:flex-start;"><div style="display:flex; flex-direction:column;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3a</div><svg id="svg"></svg>
+    
+    <div style="font-size:12px; color:var(--muted); margin-top:10px;">
+For the selected MPA all CFs (x-axis) and human activities (y-axis) are shown. Numbers inside the boxes represent either the number of MM for that particular CF and the HA affecting it (figure 3a) or the rank chosen for that HA affecting that particular CF (figure 3b). Colours represent management level from low to high, depending on the calculated score for implementation of MM, affect on the HA and rank given to a HA.
+</div>
+</div><div style="min-width:260px;"><div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#475569;">Figure 3b</div><div id="rankingContainer" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
+  
+    
+</div>
+</div>
+
 <script>
-const payload = {"ha": ["Land claim", "Tourism", "Fish & shellfish harvesting", "Coastal defence", "Hunting & population control"], "cf": ["Sandbank (33)", "Lagoons (72)", "Eagle (68)", "Lamprey (22)", "Other conservation features"], "measures": [[1, 4, null, 2, null], [2, 0, null, 5, null], [0, null, 1, 1, null], [2, 1, null, null, null], [null, null, 2, 1, null]], "levels": [["low", "high", null, "low", null], ["high", "low", null, "moderate", null], ["low", null, "low", "low", null], ["moderate", "high", null, null, null], [null, null, "high", "moderate", null]], "importance": [["high", "high", null, "moderate", null], ["high", "low", null, "low", null], ["moderate", null, "moderate", "high", null], ["low", "moderate", null, null, null], [null, null, "moderate", "high", null]], "colors": {"low": "#008e5c", "moderate": "#c7d64f", "high": "#0075bf"}};
+const payload = {"ha": ["Land claim", "Tourism", "Fish & shellfish harvesting", "Coastal defence", "Hunting & population control"], "cf": ["Sandbank (33)", "Lagoons (72)", "Eagle (68)", "Lamprey (22)", "Other conservation features"], "measures": [[1, 4, null, 2, null], [2, 0, null, 5, null], [0, null, 1, 1, null], [2, 1, null, null, null], [null, null, 2, 1, null]], "levels": [["low", "high", null, "low", null], ["high", "low", null, "moderate", null], ["low", null, "low", "low", null], ["moderate", "high", null, null, null], [null, null, "high", "moderate", null]], "importance": [["high", "high", null, "moderate", null], ["high", "low", null, "low", null], ["moderate", null, "moderate", "high", null], ["low", "moderate", null, null, null], [null, null, "moderate", "high", null]], "colors": {"low": "rgba(211,47,47,0.5)", "moderate": "rgba(251,192,45,0.5)", "high": "rgba(56,142,60,0.5)"}};
 
 // PDF button
 document.getElementById('btnPdf').addEventListener('click', () => {
@@ -667,6 +730,366 @@ cfSelect.addEventListener('change', () => {
 });
 
 reorderRows(null);
+
+// ===== SAFE DROPDOWN + MULTI CF RANKING (NON-INTRUSIVE) =====
+(function(){
+  const payloadLocal = (typeof payload !== 'undefined') ? payload : null;
+  const checkboxContainer = document.getElementById('cfCheckboxes');
+  const container = document.getElementById('rankingContainer');
+  const toggle = document.getElementById('dropdownToggle');
+  const menu = document.getElementById('dropdownMenu');
+
+  if(!payloadLocal || !checkboxContainer || !container || !toggle || !menu) return;
+
+  // dropdown behavior
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+  });
+  menu.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){ menu.style.display = 'none'; });
+
+  function rankVal(v){
+    if (v === 'high') return 1;
+    if (v === 'moderate') return 2;
+    if (v === 'low') return 3;
+    return null;
+  }
+
+  function drawSingleCF(col){
+    const wrap = document.createElement('div');
+    wrap.style.border = '1px solid var(--line)';
+    wrap.style.borderRadius = '14px';
+    wrap.style.padding = '10px';
+    wrap.style.background = '#fff';
+
+    const title = document.createElement('div');
+    title.style.fontSize = '12px';
+    title.style.fontWeight = '900';
+    title.style.marginBottom = '6px';
+    title.textContent = payloadLocal.cf[col];
+    wrap.appendChild(title);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+    const margin = {top: 16, left: 180};
+    const cell = 46;
+    const rows = payloadLocal.ha.length;
+
+    svg.setAttribute('width', margin.left + cell);
+    svg.setAttribute('height', margin.top + rows*cell);
+
+    
+
+    const order = Array.from({length: rows}, (_,i)=>i)
+  .filter(i => payloadLocal.measures[i][col] != null)
+  .sort((a,b)=>{
+      const map={high:0,moderate:1,low:2};
+      return (map[payloadLocal.importance[a][col]]??3)-(map[payloadLocal.importance[b][col]]??3);
+    });
+
+    // filtered labels
+  order.forEach((i,ri)=>{
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', margin.left - 10);
+    t.setAttribute('y', margin.top + ri*cell + cell/2);
+    t.setAttribute('class','ticklabel');
+    t.setAttribute('text-anchor','end');
+    t.textContent = payloadLocal.ha[i];
+    svg.appendChild(t);
+  });
+
+  order.forEach((i,ri)=>{
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x', margin.left);
+      rect.setAttribute('y', margin.top + ri*cell);
+      rect.setAttribute('width', cell);
+      rect.setAttribute('height', cell);
+      rect.setAttribute('rx',10);
+      rect.setAttribute('class','cellborder');
+
+      const lvl = payloadLocal.levels[i][col];
+      rect.setAttribute('fill', lvl ? payloadLocal.colors[lvl] : '#f1f5f9');
+      svg.appendChild(rect);
+
+      const val = rankVal(payloadLocal.importance[i][col]);
+      if(val !== null){
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x', margin.left + cell/2);
+        t.setAttribute('y', margin.top + ri*cell + cell/2);
+        t.setAttribute('class','cellnum');
+        t.textContent = val;
+        svg.appendChild(t);
+      }
+    });
+
+    wrap.appendChild(svg);
+    container.appendChild(wrap);
+  }
+
+  
+function update(){
+  const container = document.getElementById('rankingContainer');
+  container.innerHTML = '';
+
+  const selectedCFs = Array.from(document.querySelectorAll('#cfCheckboxes input:checked')).map(cb=>Number(cb.value));
+  const selectedHAs = Array.from(document.querySelectorAll('#haCheckboxes input:checked')).map(cb=>Number(cb.value));
+
+  // CF view (existing)
+  if(selectedCFs.length){
+    selectedCFs.forEach(col => drawSingleCF(col));
+  }
+
+  // HA view (new)
+  if(selectedHAs.length){
+    selectedHAs.forEach(row => {
+      const wrap = document.createElement('div');
+      wrap.style.border = '1px solid var(--line)';
+      wrap.style.borderRadius = '14px';
+      wrap.style.padding = '10px';
+
+      const title = document.createElement('div');
+      title.style.fontSize = '12px';
+      title.style.fontWeight = '900';
+      title.style.marginBottom = '6px';
+      title.textContent = payload.ha[row];
+      wrap.appendChild(title);
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+      const cell = 46;
+      svg.setAttribute('width', payload.cf.length * cell + 40);
+      svg.setAttribute('height', cell + 50);
+
+      payload.cf.forEach((cf, col)=>{
+        const x = 20 + col*cell;
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', 20);
+        rect.setAttribute('width', cell);
+        rect.setAttribute('height', cell);
+        rect.setAttribute('rx', 10);
+        rect.setAttribute('class', 'cellborder');
+
+        const lvl = payload.levels[row][col];
+        rect.setAttribute('fill', lvl ? payload.colors[lvl] : '#f1f5f9');
+        svg.appendChild(rect);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+        label.setAttribute('x', x + cell/2);
+        label.setAttribute('y', 75);
+        label.setAttribute('text-anchor','middle');
+        label.setAttribute('font-size','10');
+        label.textContent = cf;
+        svg.appendChild(label);
+      });
+
+      wrap.appendChild(svg);
+      container.appendChild(wrap);
+    });
+  }
+}
+
+
+  // build checkboxes
+  payloadLocal.cf.forEach((c,j)=>{
+    const label = document.createElement('label');
+    label.style.fontSize = '12px';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = j;
+    cb.style.marginRight = '6px';
+
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(c));
+    checkboxContainer.appendChild(label);
+
+    cb.addEventListener('change', update);
+  });
+
+})();
+
+
+// ===== ADD HA FILTERING =====
+(function(){
+  const payloadLocal = (typeof payload !== 'undefined') ? payload : null;
+  const haContainer = document.getElementById('haCheckboxes');
+  const cfContainer = document.getElementById('cfCheckboxes');
+  const container = document.getElementById('rankingContainer');
+
+  if(!payloadLocal || !haContainer || !cfContainer) return;
+
+  function getSelectedCFs(){
+    return Array.from(cfContainer.querySelectorAll('input:checked')).map(cb=>Number(cb.value));
+  }
+
+  function getSelectedHAs(){
+    return Array.from(haContainer.querySelectorAll('input:checked')).map(cb=>Number(cb.value));
+  }
+
+  function update(){
+    container.innerHTML = '';
+    const selectedCFs = getSelectedCFs();
+    const selectedHAs = getSelectedHAs();
+
+    selectedCFs.forEach(col => {
+      const wrap = document.createElement('div');
+      wrap.style.border = '1px solid var(--line)';
+      wrap.style.borderRadius = '14px';
+      wrap.style.padding = '10px';
+
+      const title = document.createElement('div');
+      title.style.fontSize = '12px';
+      title.style.fontWeight = '900';
+      title.style.marginBottom = '6px';
+      title.textContent = payloadLocal.cf[col];
+      wrap.appendChild(title);
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+      const margin = {top: 16, left: 180};
+      const cell = 46;
+
+      const rows = payloadLocal.ha.length;
+      svg.setAttribute('width', margin.left + cell);
+      svg.setAttribute('height', margin.top + rows*cell);
+
+      payloadLocal.ha.forEach((h,i)=>{
+        if(selectedHAs.length && !selectedHAs.includes(i)) return;
+
+        const y = margin.top + i*cell + cell/2;
+
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x', margin.left - 10);
+        t.setAttribute('y', y);
+        t.setAttribute('class','ticklabel');
+        t.setAttribute('text-anchor','end');
+        t.textContent = h;
+        svg.appendChild(t);
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', margin.left);
+        rect.setAttribute('y', margin.top + i*cell);
+        rect.setAttribute('width', cell);
+        rect.setAttribute('height', cell);
+        rect.setAttribute('rx',10);
+        rect.setAttribute('class','cellborder');
+
+        const lvl = payloadLocal.levels[i][col];
+        rect.setAttribute('fill', lvl ? payloadLocal.colors[lvl] : '#f1f5f9');
+        svg.appendChild(rect);
+      });
+
+      wrap.appendChild(svg);
+      container.appendChild(wrap);
+    });
+  }
+
+  // build HA checkboxes
+  payloadLocal.ha.forEach((h,i)=>{
+    const label = document.createElement('label');
+    label.style.fontSize = '12px';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = i;
+    cb.style.marginRight = '6px';
+
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(h));
+    haContainer.appendChild(label);
+
+    cb.addEventListener('change', update);
+  });
+
+})();
+
+
+// ===== HA CHECKBOX + ROW VIEW (MINIMAL SAFE) =====
+(function(){
+  const payloadLocal = (typeof payload !== 'undefined') ? payload : null;
+  const haBox = document.getElementById('haCheckboxes');
+  const container = document.getElementById('rankingContainer');
+
+  if(!payloadLocal || !haBox || !container) return;
+
+  // build HA checkboxes (ALWAYS)
+  haBox.innerHTML = '';
+  payloadLocal.ha.forEach((h,i)=>{
+    const label = document.createElement('label');
+    label.style.fontSize='12px';
+
+    const cb = document.createElement('input');
+    cb.type='checkbox';
+    cb.value=i;
+    cb.style.marginRight='6px';
+
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(h));
+    haBox.appendChild(label);
+
+    cb.addEventListener('change', ()=>{
+      // remove old HA rows
+      const olds = document.querySelectorAll('.ha-selected');
+      olds.forEach(el=>el.remove());
+
+      const selected = Array.from(haBox.querySelectorAll('input:checked'))
+        .map(cb=>Number(cb.value));
+
+      selected.forEach(row=>{
+        const wrap = document.createElement('div');
+        wrap.className = 'ha-selected';
+        wrap.style.border='1px solid var(--line)';
+        wrap.style.borderRadius='14px';
+        wrap.style.padding='10px';
+        wrap.style.background='#fff';
+
+        const title = document.createElement('div');
+        title.style.fontSize='12px';
+        title.style.fontWeight='900';
+        title.style.marginBottom='6px';
+        title.textContent = payloadLocal.ha[row];
+        wrap.appendChild(title);
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+        const cell = 58;
+
+        svg.setAttribute('width', payloadLocal.cf.length * cell + 40);
+        svg.setAttribute('height', 110);
+
+        payloadLocal.cf.forEach((cf,col)=>{
+          const x = 20 + col*cell;
+
+          const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+          rect.setAttribute('x', x);
+          rect.setAttribute('y', 20);
+          rect.setAttribute('width', cell);
+          rect.setAttribute('height', cell);
+          rect.setAttribute('rx', 10);
+          rect.setAttribute('class','cellborder');
+
+          const lvl = payloadLocal.levels[row][col];
+          rect.setAttribute('fill', lvl ? payloadLocal.colors[lvl] : '#f1f5f9');
+          svg.appendChild(rect);
+
+          const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+          label.setAttribute('x', x + cell/2);
+          label.setAttribute('y', 95);
+          label.setAttribute('text-anchor','middle');
+          label.setAttribute('font-size','10');
+          label.textContent = cf;
+          svg.appendChild(label);
+        });
+
+        wrap.appendChild(svg);
+        container.appendChild(wrap);
+      });
+    });
+  });
+})();
+
 </script>
 </body>
 </html>
